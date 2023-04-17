@@ -34,6 +34,8 @@ public class OptionParser {
                     "right".equals(value)
             ) {
                 sizeOfOriginalArray++;
+            }else {
+                throw new IllegalArgumentException(value + " is not legal move specification");
             }
         }
         String[] temp = new String[sizeOfOriginalArray];

@@ -1,9 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.Classes.OptionParser;
-import agh.ics.oop.Classes.RectangularMap;
-import agh.ics.oop.Classes.SimulationEngine;
-import agh.ics.oop.Classes.Vector2d;
+import agh.ics.oop.Classes.*;
 import agh.ics.oop.EnumClasses.MoveDirection;
 import agh.ics.oop.Interfaces.IWorldMap;
 import agh.ics.oop.Menu.SettingsMenu;
@@ -18,16 +15,18 @@ public class World {
     public static void main(String[] args) {
         System.out.println("START!");
 
+        String[] arr = {"f", "f", "f", "r", "r", "f", "f",  "f", "f"};
+        MoveDirection[] directions = OptionParser.parse(arr);
+        IWorldMap map = new GrassField(10);
 
-        MoveDirection[] directions = OptionParser.parse(args);
-        IWorldMap map = new RectangularMap(9, 5);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4)};
         SimulationEngine engine = new SimulationEngine(directions, map, positions);
-        System.out.println(engine.getMap().toString());
         engine.run();
-        System.out.println(map.toString());
-
+        System.out.println(map);
         System.out.println("END!");
+
+
+
 //        try {
 //            PropertiesLoader properties = PropertiesLoader.loadPropFromFile();
 //            Integer[] defaultMapProperties = {

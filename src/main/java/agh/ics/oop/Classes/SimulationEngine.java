@@ -6,8 +6,7 @@ import agh.ics.oop.Interfaces.IWorldMap;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
 
@@ -23,7 +22,7 @@ public class SimulationEngine implements IEngine {
     private final MoveDirection[] directions;
     private final IWorldMap map;
     private final Vector2d[] positions;
-    private List<Animal> animals;
+    private Map<Vector2d, Animal> animals;
     /**
 
      Constructs a new SimulationEngine object with the specified parameters.
@@ -35,7 +34,14 @@ public class SimulationEngine implements IEngine {
         this.directions = directions;
         this.map = map;
         this.positions = positions;
-        this.animals = new ArrayList<>();
+        this.animals =new HashMap<>();
+
+        for (Vector2d position : positions) {
+            Animal animal = new Animal(map, position);
+            if (map.place(animal)){
+                this.animals.put(position, animal);
+            }
+        }
 
 
     }
@@ -47,15 +53,15 @@ public class SimulationEngine implements IEngine {
     @Override
     public void run() {
 
-        for (Vector2d position : positions) {
-            Animal animal = new Animal(this.map, position);
-            if(map.place(animal)){
-                this.animals.add(animal);
-            }
-        }
-        for (MoveDirection direction : directions) {
-            for (Animal animal : animals) {
-                animal.move(direction);
+        int tabLength=animals.size();
+        Animal[] tabAnimals= new Animal[tabLength];
+
+        animals.values().toArray(tabAnimals);
+        int i=0;
+        if(tabLength!=0){
+            for (MoveDirection x : directions ) {
+                tabAnimals[i%tabLength].move(x);
+                i++;
             }
         }
     }

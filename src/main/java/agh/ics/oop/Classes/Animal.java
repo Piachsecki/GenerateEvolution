@@ -1,5 +1,6 @@
 package agh.ics.oop.Classes;
 
+import agh.ics.oop.Interfaces.IPositionChangeObserver;
 import agh.ics.oop.Interfaces.IWorldMap;
 import agh.ics.oop.EnumClasses.MapDirection;
 import agh.ics.oop.EnumClasses.MoveDirection;
@@ -7,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
 /**
  The Animal class represents an object that can move around on a map.
  It contains information about the map it is on, its position on the map, and the direction it is facing.
@@ -21,6 +25,7 @@ public class Animal {
     private IWorldMap map;
     private Vector2d position;
     private MapDirection mapDirection;
+    private List<IPositionChangeObserver> observers;
 
     {
         mapDirection = MapDirection.NORTH;
@@ -104,7 +109,25 @@ public class Animal {
 
         }
 
+
+
     }
+
+
+    void addObserver(IPositionChangeObserver observer){
+        this.observers.add(observer);
+    }
+
+    void removeObserver(IPositionChangeObserver observer){
+        this.observers.remove(observer);
+    }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        for (IPositionChangeObserver observer : observers) {
+            observer.positionChanged(oldPosition, newPosition);
+        }
+    }
+
 
 
 
